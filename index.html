@@ -259,9 +259,17 @@
 	<script>
 		let generatedUsername = '';
 
+		function sanitizeInput(input) {
+			// Remove ÅÄÖ and other special characters, keep only a-z and 0-9
+			return input.replace(/[åäö]/g, match => {
+				const map = { 'å': 'a', 'ä': 'a', 'ö': 'o' };
+				return map[match] || '';
+			}).replace(/[^a-z0-9]/g, '');
+		}
+
 		function generateUsername() {
-			const firstName = document.getElementById('firstName').value.trim().toLowerCase();
-			const lastName = document.getElementById('lastName').value.trim().toLowerCase();
+			const firstName = sanitizeInput(document.getElementById('firstName').value.trim().toLowerCase());
+			const lastName = sanitizeInput(document.getElementById('lastName').value.trim().toLowerCase());
 
 			if (!firstName || !lastName) {
 				alert('Please enter both first and last name');
